@@ -2,14 +2,14 @@ require 'spec_helper'
 require './lib/configuration'
 
 describe Configuration do
-	before(:each) do
+	before(:all) do
 		Configuration.new('./spec/.route53_test')
 		@config = Configuration
 	end
 
 
 	describe "aws properties"	do
-		before(:each) do
+		before(:all) do
 			@aws = @config.aws
 		end
 
@@ -27,7 +27,7 @@ describe Configuration do
 	end
 
 	describe "s3 properties" do
-		before(:each) do
+		before(:all) do
 			@s3 = @config.s3
 		end
 
