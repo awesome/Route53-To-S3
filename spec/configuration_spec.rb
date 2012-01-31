@@ -3,7 +3,8 @@ require './lib/configuration'
 
 describe Configuration do
 	before(:each) do
-		@config = Configuration.new('./spec/.route53_test')
+		Configuration.new('./spec/.route53_test')
+		@config = Configuration
 	end
 
 

@@ -2,20 +2,20 @@
 # Amazon Web Services will be handled by this class.
 require 'parseconfig'
 
-class Configuration
+module Configuration
 
 	# configFile: Location of the configuration file containing the
 	#							information you wish to load
 	
-	def initialize(configFile)
+	def self.new(configFile)
 		@config = ParseConfig.new(configFile)		
 	end
 
-	def aws
+	def self.aws
 		@config.params['aws']
 	end
 
-	def s3
+	def self.s3
 		@config.params['s3']
 	end
 
