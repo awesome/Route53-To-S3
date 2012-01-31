@@ -13,6 +13,7 @@ GEM
       guard (>= 0.10.0)
       spork (>= 0.8.4)
     hpricot (0.8.6)
+    parseconfig (0.5.2)
     route53 (0.2.1)
       builder
       hpricot
@@ -35,6 +36,7 @@ PLATFORMS
 DEPENDENCIES
   guard-rspec
   guard-spork
+  parseconfig (~> 0.5.2)
   route53 (~> 0.2.1)
   rspec (= 2.8.0)
   spork (= 0.9.0.rc7)

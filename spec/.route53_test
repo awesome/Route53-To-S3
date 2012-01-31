@@ -1,0 +1,23 @@
+# This is the template configuration file for Route53-To-S3.
+# All the properties are documented!
+
+#############################################################
+# Properties related to Amazon Web Services in General.
+# access_key: The access key found in 'Security Credentials'
+# secret_key: The secret key found in 'Security Credentials'
+# Note: The following access keys provided are just here
+#       to make the tests pass, they aren't real :P
+#############################################################
+[aws]
+access_key=84290uoetuhotsn420384
+secret_key=47283p98du29m3d
+
+
+#############################################################
+# Properties related to S3
+# bucket: The name of your S3 bucket you wish to upload to
+# upload_path: The directory on S3 where you want the backup
+#############################################################
+[s3]
+bucket=mys3bucket
+upload_path=path/to/directory
