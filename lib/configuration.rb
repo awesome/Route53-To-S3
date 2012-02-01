@@ -19,4 +19,8 @@ module Configuration
 		@config.params['s3']
 	end
 
+	def self.db
+		@config.params['db']
+	end
+
 end

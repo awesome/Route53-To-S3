@@ -43,4 +43,19 @@ describe Configuration do
 			@s3['upload_path'].should_not be_nil
 		end
 	end
+
+	describe "db properties" do
+		before(:all) do
+			@db = @config.db
+		end
+
+		it "should be set" do
+			@db.should_not be_nil
+		end
+
+		it "should include location" do
+			@db['location'].should_not be_nil
+		end
+
+	end
 end
