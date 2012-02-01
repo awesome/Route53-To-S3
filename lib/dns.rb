@@ -2,7 +2,7 @@
 require 'route53'
 require 'configuration'
 
-class DNS
+module DNS
 
 	#######################################
 	# Create the Route53 connection object
