@@ -32,6 +32,9 @@ class DB
 		SQL
 	end
 
+	##################################################################
+	# Methods for Zones
+	##################################################################
 	# Extract the zone_id from a zone object's host_url property
 	def zone_id(zone)
 		# Example host_url: /hostedzone/zoneID
@@ -71,8 +74,11 @@ class DB
 			);
 		SQL
 	end
-
-	# Join the values of the record entry together
+	
+	##################################################################
+	# Methods for Records
+	##################################################################
+	# Join the values of the record entry to a string
 	def join_values(record)
 		record.values.join(',')
 	end
