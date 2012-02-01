@@ -16,17 +16,17 @@ class DNS
 		end
 
 		# Get the aws profiles
-		@aws = Configuration.aws
+		@config = Configuration.aws
 
 		# Now create a Route53 connection
-		@conn = Route53::Connection.new(@aws['access_key'],@aws['secret_key'])
+		@r53 = Route53::Connection.new(@config['access_key'],@config['secret_key'])
 	end
 
 	#######################################
 	# Get the list of DNS zones
 	#######################################
 	def self.zones
-		@conn.get_zones
+		@r53.get_zones
 	end
 
 	############################################
