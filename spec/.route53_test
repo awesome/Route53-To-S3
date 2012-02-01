@@ -21,3 +21,10 @@ secret_key=47283p98du29m3d
 [s3]
 bucket=mys3bucket
 upload_path=path/to/directory
+
+#############################################################
+# Properties related to the SQLite3 Database
+# location: Where you want the local db file to be created
+#############################################################
+[db]
+location=spec/test.db
