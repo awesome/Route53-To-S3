@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'ostruct'
 require './lib/db'
 require './lib/dns'
 
@@ -8,20 +7,9 @@ describe DB do
 		Configuration.new('./spec/.route53_test')
 		@config = Configuration.db
 		@db = DB.new
+		@zone = sample_zone
+		@record = sample_record
 
-		# Create pretend zone/record objects. 
-		@zone = OpenStruct.new({
-			:name => "somedomain.com",
-			:host_url => "/hostedzone/LOL123"
-		})
-
-		@record = OpenStruct.new({
-			:name => "www.somedomain.com",
-			:type => "CNAME",
-			:ttl => 900,
-			:values => ["ns-1741.awsdns-25.co.uk.", 
-									"ns-331.awsdns-41.com."] 
-		})
 	end
 
 	# Delete the database after the test if the database was 
@@ -43,7 +31,6 @@ describe DB do
 		it "should return the zone's zone id" do
 			@db.zone_id(@zone).should eq("LOL123")
 		end
-
 	end
 
 	describe "#add_zone" do
@@ -51,12 +38,9 @@ describe DB do
 			@db.add_zone(@zone)
 
 			# Attempt to find the zone added
-			result = @db.db.execute <<-SQL
-				SELECT * from zones
-				WHERE domain='#{@zone.name}' AND
-				zone_id='#{@db.zone_id(@zone)}'
-			SQL
+			result = find_zone_entry(@db, @zone)
 			result.should_not be_empty
+
 		end
 	end
 
@@ -71,17 +55,7 @@ describe DB do
 			@db.create_zone_table(@zone)
 
 			# Try to select something from the newly created table.
-			tableExists=true
-			begin
-				@db.db.execute <<-SQL
-					select * from #{@db.clean_zone_name(@zone)}
-				SQL
-			rescue SQLite3::SQLException => e
-				if e.message =~ /no such table/i
-					tableExists=false
-				end
-			end
-			tableExists.should be_true
+			zone_table_created(@db, @zone).should be_true
 		end
 	end
 
@@ -95,20 +69,7 @@ describe DB do
 	describe "#add_record" do
 		it "should add a record to the provided zone" do
 			@db.add_record(@record, @zone)
-
-			cleanVals = @record.values.join(',')
-		
-			# Check to see the record was added
-			results = @db.db.execute <<-SQL
-				select * from #{@db.clean_zone_name(@zone)}
-				where 
-					name='#{@record.name}' AND
-					type='#{@record.type}' AND
-					ttl=#{@record.ttl} AND
-					vals='#{@db.join_values(@record)}'
-			SQL
-
-			results.should_not be_empty
+			find_record_entry(@db, @zone, @record).should_not be_empty
 		end
 	end
 end
