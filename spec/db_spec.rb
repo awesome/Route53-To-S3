@@ -20,8 +20,6 @@ describe DB do
 			:type => "CNAME",
 			:ttl => 900,
 			:values => ["ns-1741.awsdns-25.co.uk.", 
-									"ns-1092.awsdns-08.org.", 
-									"ns-950.awsdns-54.net.", 
 									"ns-331.awsdns-41.com."] 
 		})
 	end
@@ -83,8 +81,34 @@ describe DB do
 					tableExists=false
 				end
 			end
-
 			tableExists.should be_true
+		end
+	end
+
+	describe "#join_values" do
+		it "should join values together by commas" do
+			joinedString = "ns-1741.awsdns-25.co.uk.,ns-331.awsdns-41.com." 
+			@db.join_values(@record).should eq(joinedString)
+		end
+	end
+
+	describe "#add_record" do
+		it "should add a record to the provided zone" do
+			@db.add_record(@record, @zone)
+
+			cleanVals = @record.values.join(',')
+		
+			# Check to see the record was added
+			results = @db.db.execute <<-SQL
+				select * from #{@db.clean_zone_name(@zone)}
+				where 
+					name='#{@record.name}' AND
+					type='#{@record.type}' AND
+					ttl=#{@record.ttl} AND
+					vals='#{@db.join_values(@record)}'
+			SQL
+
+			results.should_not be_empty
 		end
 	end
 end

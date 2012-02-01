@@ -66,9 +66,28 @@ class DB
 				id INTEGER PRIMARY KEY,
 				name TEXT,
 				type TEXT,
-				ttl INT
+				ttl INT,
 				vals TEXT
 			);
+		SQL
+	end
+
+	# Join the values of the record entry together
+	def join_values(record)
+		record.values.join(',')
+	end
+	
+	# Insert  a record into a zone table
+	def add_record(record, zone)
+		@db.execute <<-SQL
+			INSERT into #{clean_zone_name(zone)}
+			(name, type, ttl, vals)
+			VALUES(
+			'#{record.name}',
+			'#{record.type}',
+			'#{record.ttl}',
+			'#{join_values(record)}'
+			)
 		SQL
 	end
 end
