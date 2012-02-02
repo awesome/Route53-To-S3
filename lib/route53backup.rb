@@ -69,8 +69,3 @@ module Route53Backup
 	end
 
 end
-
-Configuration.new('./spec/.route53_test')
-Route53Backup.connect
-Route53Backup.populate_db
-Route53Backup.upload_db
