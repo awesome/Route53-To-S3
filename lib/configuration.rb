@@ -16,6 +16,12 @@ module Configuration
 	end
 
 	def self.s3
+		# Remove the beginning slash from the upload path if present
+		upload_path = @config.params['s3']['upload_path']
+		if upload_path[0] == '/'
+			upload_path = upload_path[1..-1]
+		end
+		@config.params['s3']['upload_path'] = upload_path
 		@config.params['s3']
 	end
 

@@ -24,6 +24,9 @@ module Route53Backup
 			DNS.connect
 			@zones = DNS.zones
 		end
+
+		# If we made it all the way here, assume everything was successful
+		# and return true for testing purposes.
 		return true
 	end
 
@@ -46,6 +49,21 @@ module Route53Backup
 				@db.add_record(record, zone)
 			end
 		end
+	end
+
+	# Upload the db to s3!
+	def self.upload_db
+		# Get the full path of the database
+		dbLoc = Configuration.db['location']
+		basename = File.basename(dbLoc)
+		upload_path = Configuration.s3['upload_path']
+		bucket = Configuration.s3['bucket']
+		fullPath = File.join(upload_path, basename)
+		AWS::S3::S3Object.store(
+			fullPath,
+			open(dbLoc),
+			bucket
+		)
 	end
 
 end

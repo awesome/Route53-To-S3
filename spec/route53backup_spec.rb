@@ -42,5 +42,20 @@ describe Route53Backup do
 		end
 	end
 
+	describe ".upload_db" do
+		it "should upload the database to S3" do
+			Route53Backup.upload_db
 
+			# Get db basename
+			basename = File.basename(@config.db['location'])
+
+			# Full path of the db file on S3
+			fullPath = File.join(@config.s3['upload_path'], basename)
+
+			# Get the file object
+			lambda{
+				AWS::S3::S3Object.find(fullPath, @config.s3['bucket'])
+			}.should_not raise_error(AWS::S3::NoSuchKey)
+		end
+	end
 end
