@@ -22,11 +22,21 @@ Spork.prefork do
 			})
 		end
 
+		def sample_record2
+			OpenStruct.new({
+				:name => "www.somedomain.com",
+				:type => "CNAME",
+				:ttl => nil,
+				:values => ["ns-1741.awsdns-25.co.uk.", 
+										"ns-331.awsdns-41.com."] 
+			})
+		end
+
 		def sample_zone
 			OpenStruct.new({
 				:name => "somedomain.com",
 				:host_url => "/hostedzone/LOL123",
-				:get_records => [sample_record]
+				:get_records => [sample_record, sample_record2]
 			})
 		end
 		
@@ -56,13 +66,16 @@ Spork.prefork do
 		end
 
 		def find_record_entry(db, zone, record)
+			# Account for the possibility of no ttl	
+			ttl = record.ttl.nil?? "''" : record.ttl
+
 			# Check to see the record was added
 			results = db.db.execute <<-SQL
 				select * from #{db.clean_zone_name(zone)}
 				where 
 					name='#{record.name}' AND
 					type='#{record.type}' AND
-					ttl=#{record.ttl} AND
+					ttl=#{ttl} AND
 					vals='#{db.join_values(record)}'
 			SQL
 		end

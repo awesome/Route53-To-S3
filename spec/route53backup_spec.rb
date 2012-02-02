@@ -8,6 +8,7 @@ describe Route53Backup do
 		@db = DB.new
 		@zone = sample_zone
 		@record = sample_record
+		@record2 = sample_record2
 	end
 
 	# Delete the database after the test if the database was 
@@ -39,6 +40,7 @@ describe Route53Backup do
 
 		it "should populate a zone's tables with records" do
 			find_record_entry(@db, @zone, @record).should_not be_empty
+			find_record_entry(@db, @zone, @record2).should_not be_empty
 		end
 	end
 
