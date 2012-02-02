@@ -3,6 +3,7 @@
 
 require 'sqlite3'
 require 'configuration'
+require 'fileutils'
 
 class DB
 	attr_reader :db
@@ -15,13 +16,18 @@ class DB
 			Configuration.new(configFile)
 		end
 
-		# Get the database profile and db object
-		@config = Configuration.db
+		# Get the database location
+		@dbLoc = Configuration.db['location']
+
 	end
 
 	# Create the database with the proper schema.
 	def create
-		@db = SQLite3::Database.new(@config['location'])
+		# Remove old database backup and create a new one.
+		# This is just a backup for peace of mind :)
+		delete_db_backup
+		backup_db
+		@db = SQLite3::Database.new(@dbLoc)
 		@db.execute <<-SQL
 			create table zones (
 				id INTEGER PRIMARY KEY,
@@ -99,5 +105,26 @@ class DB
 			)
 		SQL
 		@db.execute query
+	end
+
+
+	##################################################################
+	# Methods for file management
+	##################################################################
+	private
+	def delete_db_backup
+		backupLoc = @dbLoc + ".backup"
+		if File.exists?(backupLoc)
+			puts "Deleting backup database"
+			FileUtils.rm(backupLoc)
+		end
+	end
+	
+	# Copy the database from the last run
+	def backup_db
+		if File.exists?(@dbLoc)
+			puts "Creating db backup"
+			FileUtils.mv(@dbLoc, @dbLoc + ".backup")
+		end
 	end
 end

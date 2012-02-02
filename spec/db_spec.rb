@@ -21,8 +21,18 @@ describe DB do
 	end
 
 	describe "#create" do
-		it "should create a database at the path specified in the config file" do
+		before(:all) do
+			# Create a fake database so the create method will create a
+			# backup of it.
+			File.open(@config['location'], 'w') {|f| f.write("This is a fake db!") }
 			@db.create
+		end
+		it "should create a backup of the previous database" do
+			dbCopy = "#{@config['location']}.backup"
+			File.exists?(dbCopy).should be_true
+		end
+
+		it "should create a database at the path specified in the config file" do
 			File.exists?(@config['location']).should be_true
 		end
 	end
