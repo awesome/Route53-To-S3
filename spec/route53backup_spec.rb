@@ -11,7 +11,7 @@ describe Route53Backup do
 	end
 
 	# Delete the database after the test if the database was 
-	# successfully created.
+	# successfully created. Also delete in on the server
 	after(:all) do
 		if File.exists?(@config.db['location'])
 			File.delete(@config.db['location'])
@@ -43,18 +43,25 @@ describe Route53Backup do
 	end
 
 	describe ".upload_db" do
-		it "should upload the database to S3" do
+		before(:all) do
 			Route53Backup.upload_db
 
-			# Get db basename
-			basename = File.basename(@config.db['location'])
-
 			# Full path of the db file on S3
-			fullPath = File.join(@config.s3['upload_path'], basename)
+			basename = File.basename(@config.db['location'])
+			@fullPath = File.join(@config.s3['upload_path'], basename)
+			@bucket = @config.s3['bucket']
 
+		end
+
+		# Delete the file on the bucket
+		after(:all) do
+			AWS::S3::S3Object.delete(@fullPath, @bucket)
+		end
+
+		it "should upload the database to S3" do
 			# Get the file object
 			lambda{
-				AWS::S3::S3Object.find(fullPath, @config.s3['bucket'])
+				AWS::S3::S3Object.find(@fullPath, @bucket)
 			}.should_not raise_error(AWS::S3::NoSuchKey)
 		end
 	end
