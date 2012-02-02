@@ -69,7 +69,6 @@ module Route53Backup
 			open(dbLoc),
 			bucket
 		)
-		puts "Route53 Backup uploaded!"
 	end
 
 end
