@@ -1,6 +1,5 @@
 # This class populates our database with Route53 data and uploads to S3
 
-$:.unshift File.dirname(__FILE__)
 require 'configuration'
 require 'db'
 require 'dns'
