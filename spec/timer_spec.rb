@@ -44,6 +44,15 @@ describe Timer do
 		end
 	end
 
+	describe "#time_difference" do
+		it "should display a human readable time difference" do
+			t1 = Chronic::parse(@timeList[0])
+			t2 = Chronic::parse(@timeList[1])
+			diff = @timer.time_difference(t1, t2)
+			diff.should eq("3 hours and 45 minutes")
+		end
+	end
+
 	describe "#ready_for_upload?" do
 		describe "if current time < upcoming time" do
 			it "should return false" do
