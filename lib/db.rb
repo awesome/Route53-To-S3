@@ -69,7 +69,7 @@ class DB
 				id INTEGER PRIMARY KEY,
 				name TEXT,
 				type TEXT,
-				ttl INT,
+				ttl TEXT,
 				vals TEXT
 			);
 		SQL
@@ -85,15 +85,19 @@ class DB
 	
 	# Insert  a record into a zone table
 	def add_record(record, zone)
-		@db.execute <<-SQL
+		# Account for the possibility of no ttl	
+		ttl = record.ttl.nil?? "''" : record.ttl
+
+		query = <<-SQL
 			INSERT into #{clean_zone_name(zone)}
 			(name, type, ttl, vals)
 			VALUES(
 			'#{record.name}',
 			'#{record.type}',
-			'#{record.ttl}',
+			#{ttl},
 			'#{join_values(record)}'
 			)
 		SQL
+		@db.execute query
 	end
 end

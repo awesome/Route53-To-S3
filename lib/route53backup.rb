@@ -1,5 +1,6 @@
 # This class populates our database with Route53 data and uploads to S3
 
+$:.unshift File.dirname(__FILE__)
 require 'configuration'
 require 'db'
 require 'dns'
@@ -46,6 +47,7 @@ module Route53Backup
 
 			# For each record, make an entry into its associated zone.
 			records.each do |record|
+				puts record
 				@db.add_record(record, zone)
 			end
 		end
@@ -67,3 +69,8 @@ module Route53Backup
 	end
 
 end
+
+Configuration.new('./spec/.route53_test')
+Route53Backup.connect
+Route53Backup.populate_db
+Route53Backup.upload_db

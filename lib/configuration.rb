@@ -1,5 +1,8 @@
 # Configurations for the project. All properties related to
 # Amazon Web Services will be handled by this class.
+require 'rubygems'
+require 'bundler/setup'
+
 require 'parseconfig'
 
 module Configuration
