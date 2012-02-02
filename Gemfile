@@ -5,6 +5,7 @@ gem "parseconfig", "~> 0.5.2"
 gem "sqlite3", "~> 1.3.5"
 gem "aws-s3", "~> 0.6.2"
 gem "chronic", "~> 0.6.7"
+gem "daemons", "~> 1.1.6"
 
 # Testing
 gem "rspec", "2.8.0"
