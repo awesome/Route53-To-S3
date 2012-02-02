@@ -71,5 +71,9 @@ describe Configuration do
 		it "should include 'times'" do
 			@daemon['times'].should_not be_nil
 		end
+
+		it "should include 'pid_path'" do
+			@daemon['pid_path'].should_not be_nil
+		end
 	end
 end
