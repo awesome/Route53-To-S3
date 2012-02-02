@@ -9,7 +9,7 @@ require 'chronic'
 describe Timer do
 	before(:all) do
 		Configuration.new('./spec/.route53_test')
-		@timeList = ['05:45', '09:30', '15:00']
+		@timeList = "05:45, 09:30, 15:00"
 		@timer = Timer.new(@timeList)
 	end
 
@@ -18,8 +18,9 @@ describe Timer do
 			@timer.should_not be_nil
 		end
 
-		it "should have an accessible 'times' attribute" do
+		it "should have an accessible 'times' attribute composed of Time objects" do
 			@timer.times.should_not be_nil
+			@timer.times[0].class.should eq(Time)
 		end
 	end
 
@@ -28,7 +29,7 @@ describe Timer do
 			@timer = Timer.new(@timeList)
 			newTimeList = ['09:30', '15:00', '05:45']
 			@timer.shift_time
-			@timer.times.should eq(newTimeList)
+			@timer.times.map{|time| time.strftime("%H:%M")}.should eq(newTimeList)
 		end
 	end
 
@@ -46,8 +47,8 @@ describe Timer do
 
 	describe "#time_difference" do
 		it "should display a human readable time difference" do
-			t1 = Chronic::parse(@timeList[0])
-			t2 = Chronic::parse(@timeList[1])
+			t1 = Chronic::parse("05:45")
+			t2 = Chronic::parse("09:30")
 			diff = @timer.time_difference(t1, t2)
 			diff.should eq("3 hours and 45 minutes")
 		end
@@ -76,7 +77,7 @@ describe Timer do
 			end
 
 			it "should shift the times list" do
-				@timer.times[0].should eq(@timeList[1])
+				@timer.times[0].should eq(Chronic::parse("09:30"))
 			end
 
 			it "should cause ready_for_upload to be false again" do

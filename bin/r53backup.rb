@@ -12,15 +12,17 @@ require 'timer'
 class Route53ToS3 < Daemon::Base
 	def self.start
 		# Create configuration object from the config file
-		Configuration.new('spec/.route53_test')
+		Configuration.new('../spec/.route53_test')
 
 		# Do an initial upload on start
-		upload
+		#upload
 
 		# Now upload based on time if specified in the configuration file.
 		if !Configuration.daemon['times'].nil?
-			timeList = Configuration.daemon['times'].split(',')
+			timeList = Configuration.daemon['times']
 			@timer = Timer.new(timeList)
+
+			puts "Next upload in #{@timer.next_upload}"
 
 			# Keep looping and waiting until the time has come to upload,
 			# and then upload once it's time!
@@ -28,6 +30,7 @@ class Route53ToS3 < Daemon::Base
 
 				if @timer.ready_for_upload? 
 					upload
+					puts "Next upload in #{@timer.next_upload}"
 				end
 
 				# Sleep for 20 seconds at a time, no need to check as fast as possible!
@@ -53,5 +56,5 @@ class Route53ToS3 < Daemon::Base
 	end
 end
 
-#Route53ToS3.daemonize
-Route53ToS3.start
+Route53ToS3.daemonize
+#Route53ToS3.start

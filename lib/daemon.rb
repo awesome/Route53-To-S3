@@ -5,7 +5,7 @@ module Daemon
 
   class Base
     def self.pid_fn
-      File.join(WorkingDirectory, "#{name}.pid")
+      File.join("run", "#{name}.pid")
     end
     
     def self.daemonize
@@ -41,6 +41,10 @@ module Daemon
     
     def self.start(daemon)
       fork do
+        if File.file?(daemon.pid_fn)
+          puts "Pid file exists. Is the daemon already running?"
+          exit
+        end
         Process.setsid
         exit if fork
         PidFile.store(daemon, Process.pid)
@@ -48,7 +52,7 @@ module Daemon
         File.umask 0000
         STDIN.reopen "/dev/null"
         STDOUT.reopen "/dev/null", "a"
-        STDERR.reopen STDOUT
+        STDERR.reopen "/dev/null"
         trap("TERM") {daemon.stop; exit}
         daemon.start
       end

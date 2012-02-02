@@ -5,24 +5,22 @@ require 'chronic'
 class Timer
 	attr_reader :times
 
-	# Pass in a list of time strings in the format of 'hh:mm'. These represent the 
-	# times in the day the user wants the upload to happen
+	# Pass in a string of comma delimited times in the format hh:mm,hh:mm.
+	# These are the times the uploads will happen.
 	def initialize(times)
-		@timeList = times
-		
-		# We won't touch @timeList, so @times will be the 'moving copy' of 
-		# times.
-		@times = @timeList.clone
+		@times = times.split(',').map{|time| Chronic::parse(time.strip)}.sort
 	end
 
 	# Pop and append first time to last
 	def shift_time
-		@times.push(@times.shift)
+		# Expired time is done for the day. Reset for tomorrow!
+		expired = @times.shift
+		@times.push(Chronic::parse(expired.strftime("%H:%M")))
 	end
 
 	# Return the upcoming time as a Time object to be used in comparison.
 	def upcoming_time
-		Chronic::parse(@times.first)
+		@times.first
 	end
 
 	# Return a formatted string of how long until the next upload
