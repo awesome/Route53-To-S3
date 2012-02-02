@@ -32,4 +32,8 @@ module Configuration
 		@config.params['db']
 	end
 
+	def self.daemon
+		@config.params['daemon']
+	end
+
 end

@@ -19,8 +19,8 @@ secret_key=47283p98du29m3d
 # upload_path: The directory on S3 where you want the backup
 #############################################################
 [s3]
-bucket=mys3bucket
-upload_path=path/to/directory
+bucket=media.comcorpusa.com
+upload_path=/testfolder/
 
 #############################################################
 # Properties related to the SQLite3 Database
@@ -28,3 +28,12 @@ upload_path=path/to/directory
 #############################################################
 [db]
 location=spec/test.db
+
+###############################################################
+# Properties related to running route53 backup as a daemon.
+# These fields are NOT required if you aren't going to run
+# the backup as a daemon.
+# times: The times (hh:mm) to upload, separated by commas.
+###############################################################
+[daemon]
+times=02:00
