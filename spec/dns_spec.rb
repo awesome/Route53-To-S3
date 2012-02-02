@@ -4,7 +4,6 @@ require './lib/dns'
 describe DNS do
 	before(:all) do
 		Configuration.new('./spec/.route53_test')
-		@config = Configuration.aws
 		DNS.connect
 
 		# Althought putting @zones here isn't following best practice,
