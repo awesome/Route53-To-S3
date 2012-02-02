@@ -33,7 +33,7 @@ module DNS
 	# Get the list of DNS records for a DNS zone
 	############################################
 	def self.records(zone)
-		records = zone.get_records
+		zone.get_records
 	end
 
 end

@@ -11,12 +11,6 @@ Spork.prefork do
 		#######################################
 		# Global test variables
 		#######################################
-		def sample_zone
-			OpenStruct.new({
-				:name => "somedomain.com",
-				:host_url => "/hostedzone/LOL123"
-			})
-		end
 
 		def sample_record
 			OpenStruct.new({
@@ -25,6 +19,14 @@ Spork.prefork do
 				:ttl => 900,
 				:values => ["ns-1741.awsdns-25.co.uk.", 
 										"ns-331.awsdns-41.com."] 
+			})
+		end
+
+		def sample_zone
+			OpenStruct.new({
+				:name => "somedomain.com",
+				:host_url => "/hostedzone/LOL123",
+				:get_records => [sample_record]
 			})
 		end
 		
