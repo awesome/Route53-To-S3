@@ -37,16 +37,19 @@ module Route53Backup
 		# Create the database at the location specified in the config file
 		@db.create
 
+
+		puts "Populating zone tables..."
 		@zones.each do |zone|
 			# Create a table for each zone found
 			@db.create_zone_table(zone)
+
+			puts "\t#{zone.name}"
 
 			# Get the records of each zone
 			records = DNS.records(zone)
 
 			# For each record, make an entry into its associated zone.
 			records.each do |record|
-				puts record
 				@db.add_record(record, zone)
 			end
 		end
@@ -55,6 +58,7 @@ module Route53Backup
 	# Upload the db to s3!
 	def self.upload_db
 		# Get the full path of the database
+		puts "Uploading..."
 		dbLoc = Configuration.db['location']
 		basename = File.basename(dbLoc)
 		upload_path = Configuration.s3['upload_path']
@@ -65,6 +69,7 @@ module Route53Backup
 			open(dbLoc),
 			bucket
 		)
+		puts "Route53 Backup uploaded!"
 	end
 
 end
