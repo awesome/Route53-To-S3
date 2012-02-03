@@ -123,8 +123,9 @@ class DB
 	# Copy the database from the last run
 	def backup_db
 		if File.exists?(@dbLoc)
-			puts "Creating db backup"
-			FileUtils.mv(@dbLoc, @dbLoc + ".backup")
+			newLoc = "#{@dbLoc}.backup"
+			puts "Creating db backup at #{newLoc}"
+			FileUtils.mv(@dbLoc, newLoc)
 		end
 	end
 end

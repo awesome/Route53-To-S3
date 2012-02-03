@@ -11,8 +11,6 @@ require 'timer'
 
 class Route53ToS3 < Daemon::Base
 	def self.start
-		# Create configuration object from the config file
-		Configuration.new('../spec/.route53_test')
 
 		# Do an initial upload on start
 		#upload
@@ -56,5 +54,10 @@ class Route53ToS3 < Daemon::Base
 	end
 end
 
+# Create configuration from the config file located in this directory. 
+# Now Configuration can be called from anywhere!
+configFile = File.join(File.dirname(__FILE__), ".route53")
+Configuration.new(configFile)
+
+# Run the daemon
 Route53ToS3.daemonize
-#Route53ToS3.start

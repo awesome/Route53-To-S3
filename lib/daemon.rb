@@ -1,11 +1,12 @@
 require 'fileutils'
+require 'configuration'
 
 module Daemon
   WorkingDirectory = File.expand_path(File.dirname(__FILE__))  
 
   class Base
     def self.pid_fn
-      File.join("run", "#{name}.pid")
+      File.join(Configuration.daemon['pid_path'], "#{name}.pid")
     end
     
     def self.daemonize
