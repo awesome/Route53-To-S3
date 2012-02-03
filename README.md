@@ -64,7 +64,3 @@ provide db location and daemon information.
 After editing the test configuration file, you can run the tests via
 
     $ bundle exec rspec spec/*
-
-Authors
--------
-Joseph McCullough
