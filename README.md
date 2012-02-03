@@ -13,15 +13,12 @@ Clone the repo and change to its directory!
     $ git clone git://github.com/joequery/Route53-To-S3.git
     $ cd Route53-To-S3
 
-Move the ```route53_config.txt``` file to ```.route53```
+Modify the ```bin/.route53``` file to contain your AWS information.
 
-    $ route53_config.txt .route53
-
-Modify the ```.route53``` file to contain your AWS information.
-
+    $ cd bin
     $ vim .route53
 
-Now bundle install, and you're done!
+Now bundle install, and you're done configuring!
 
     $ bundle install
 
@@ -41,6 +38,18 @@ and run
 The ```.route53``` configuration file contains a ```upload-interval``` option
 that allows you to specify an upload interval in seconds when the process is
 running as a daemon.
+
+Testing
+-------
+
+There is a test configuration file located at ```spec/.route53_test```. 
+If you wish to run tests, modify this configuration file to have your AWS 
+security credentials. Make sure you don't use the same database name and
+upload path combination, or you'll overwrite your real data!
+
+After editing the test configuration file, you can run the tests via
+
+    $ bundle exec rspec spec/*
 
 Authors
 -------

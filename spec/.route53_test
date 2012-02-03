@@ -4,6 +4,7 @@
 #////////////////////////////////////////////////////////////
 #              PLEASE USE ABSOLUTE PATHS!!!                //
 #      Many tests will not pass without valid S3 info      //
+#      Also, be sure to not use any quotes in paths        //
 #////////////////////////////////////////////////////////////
 
 #############################################################
@@ -27,7 +28,8 @@ upload_path=
 
 #############################################################
 # Properties related to the SQLite3 Database
-# location: Where you want the local db file to be created
+# location: Full path(including filename) where you want the 
+#						local db file to be created
 #############################################################
 [db]
 location=

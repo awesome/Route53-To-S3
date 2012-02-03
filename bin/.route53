@@ -1,9 +1,10 @@
 # This is the template configuration file for Route53-To-S3.
 # All the properties are documented! 
 
-#////////////////////////////////
-# PLEASE USE ABSOLUTE PATHS!!! //
-#////////////////////////////////
+#////////////////////////////////////
+# PLEASE USE ABSOLUTE PATHS!!!     //
+# Also, don't use quotes for paths //
+#////////////////////////////////////
 
 #############################################################
 # Properties related to Amazon Web Services in General.
@@ -26,7 +27,8 @@ upload_path=
 
 #############################################################
 # Properties related to the SQLite3 Database
-# location: Where you want the local db file to be created
+# location: full path(including filename) Where you want the 
+#						local db file to be created
 #############################################################
 [db]
 location=
