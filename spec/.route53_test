@@ -12,8 +12,8 @@
 # secret_key: The secret key found in 'Security Credentials'
 #############################################################
 [aws]
-access_key=84290uoetuhotsn420384
-secret_key=47283p98du29m3d
+access_key=
+secret_key=
 
 
 #############################################################
@@ -22,8 +22,8 @@ secret_key=47283p98du29m3d
 # upload_path: The directory on S3 where you want the backup
 #############################################################
 [s3]
-bucket=bybucket
-upload_path=/some/path
+bucket=
+upload_path=
 
 #############################################################
 # Properties related to the SQLite3 Database
@@ -35,9 +35,9 @@ location=
 ###############################################################
 # Properties related to running route53 backup as a daemon.
 # times: The times (hh:mm) to upload, separated by commas.
-# pid_path: The directory where you want the PID for this 
+# pid_dir: The directory where you want the PID for this 
 #						daemon to be created.
 ###############################################################
 [daemon]
-times=02:00
-pid_path=/tmp
+times=05:00
+pid_dir=/tmp

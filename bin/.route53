@@ -9,7 +9,6 @@
 # Properties related to Amazon Web Services in General.
 # access_key: The access key found in 'Security Credentials'
 # secret_key: The secret key found in 'Security Credentials'
-# NOTE: Some tests won't pass with invalid keys.
 #############################################################
 [aws]
 access_key=
@@ -35,10 +34,9 @@ location=
 ###############################################################
 # Properties related to running route53 backup as a daemon.
 # times: The times (hh:mm) to upload, separated by commas.
-# pid_path: The directory where you want the PID for this 
+# pid_dir: The directory where you want the PID for this 
 #						daemon to be created.
 ###############################################################
 [daemon]
-times=02:00,15:30
-pid_path=
-
+times=02:00
+pid_dir=/tmp

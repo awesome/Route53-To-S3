@@ -6,7 +6,7 @@ module Daemon
 
   class Base
     def self.pid_fn
-      File.join(Configuration.daemon['pid_path'], "#{name}.pid")
+      File.join(Configuration.daemon['pid_dir'], "#{name}.pid")
     end
     
     def self.daemonize
