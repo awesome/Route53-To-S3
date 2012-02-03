@@ -9,8 +9,10 @@ require 'chronic'
 describe Timer do
 	before(:all) do
 		Configuration.new('./spec/.route53_test')
-		@timeList = "05:45, 09:30, 15:00"
-		@timer = Timer.new(@timeList)
+
+		@timeConfig= "00:00, 08:00, 16:00"
+		@timer = Timer.new(@timeConfig)
+		@timeList = @timer.times.clone
 	end
 
 	describe "initialization" do
@@ -26,10 +28,10 @@ describe Timer do
 
 	describe "#shift_time" do
 		it "should shift the first time slot to the last" do
-			@timer = Timer.new(@timeList)
-			newTimeList = ['09:30', '15:00', '05:45']
+			@timer = Timer.new(@timeConfig)
+			newTimeList = [@timeList[1], @timeList[2], @timeList[0]]
 			@timer.shift_time
-			@timer.times.map{|time| time.strftime("%H:%M")}.should eq(newTimeList)
+			@timer.times.should eq(newTimeList)
 		end
 	end
 
@@ -38,7 +40,7 @@ describe Timer do
 			upcomingTime = @timer.upcoming_time
 
 			# Make sure we got the first entry
-			upcomingTime.to_s.should eq("2012-02-03 05:45:00 -0600")
+			upcomingTime.to_s.should eq(@timeList[0].to_s)
 
 			# Make sure it's a Time object so we can do operations on it
 			upcomingTime.class.should eq(Time)
@@ -47,18 +49,19 @@ describe Timer do
 
 	describe "#time_difference" do
 		it "should display a human readable time difference" do
-			t1 = Chronic::parse("05:45")
-			t2 = Chronic::parse("09:30")
+			t1 = @timeList[0]
+			t2 = @timeList[1]
 			diff = @timer.time_difference(t1, t2)
-			diff.should eq("3 hours and 45 minutes")
+			diff.should eq("8 hours and 0 minutes")
 		end
 	end
 
 	describe "#ready_for_upload?" do
 		describe "if current time < upcoming time" do
 			it "should return false" do
-				# Fake a current time
-				currentTime = Chronic::parse("05:40")
+				# Fake a current time. One less than first entry is
+				# still less than first entry, so should work!
+				currentTime = @timeList.first - 1
 				@timer.ready_for_upload?(currentTime).should be_false
 			end
 		end
@@ -67,8 +70,10 @@ describe Timer do
 			# We want to share the timer object between the
 			# two tests
 			before(:all) do
-				@timer = Timer.new(@timeList)
-				@currentTime = Chronic::parse("07:40")
+				@timer = Timer.new(@timeConfig)
+
+				# Choose first entry!
+				@currentTime = @timeList[0]
 			end
 
 			it "should return true" do
@@ -77,7 +82,7 @@ describe Timer do
 			end
 
 			it "should shift the times list" do
-				@timer.times[0].should eq(Chronic::parse("09:30"))
+				@timer.times[0].should eq(@timeList[1])
 			end
 
 			it "should cause ready_for_upload to be false again" do
