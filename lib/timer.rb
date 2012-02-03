@@ -37,7 +37,7 @@ class Timer
 		# If the current time has passed the time at the first
 		# slot of the @times list, shift and append first time 
 		# and return true
-		if currentTime > upcoming_time
+		if currentTime >= upcoming_time
 			shift_time
 			return true
 		else
