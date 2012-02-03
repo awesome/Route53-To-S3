@@ -13,7 +13,7 @@ class Route53ToS3 < Daemon::Base
 	def self.start
 
 		# Do an initial upload on start
-		#upload
+		upload
 
 		# Now upload based on time if specified in the configuration file.
 		if !Configuration.daemon['times'].nil?
