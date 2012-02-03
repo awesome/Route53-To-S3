@@ -8,6 +8,11 @@ an S3 Bucket
 Installation and Configuration
 ------------------------------
 
+Requirements:
+
+* Ruby 1.9.2 or greater
+* bundler
+
 Clone the repo and change to its directory!
 
     $ git clone git://github.com/joequery/Route53-To-S3.git
