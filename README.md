@@ -13,12 +13,14 @@ Requirements:
 * Ruby 1.9.2 or greater
 * bundler
 
-Clone the repo and change to its directory!
+Clone the repo and change to its directory.
 
     $ git clone git://github.com/joequery/Route53-To-S3.git
     $ cd Route53-To-S3
 
 Modify the ```bin/.route53``` file to contain your AWS information.
+The file contains extensive comments so you'll know exactly where 
+to put your information.
 
     $ cd bin
     $ vim .route53
@@ -30,19 +32,23 @@ Now bundle install, and you're done configuring!
 Usage
 -----
 
-To backup your DNS records once, cd to the ```bin``` directory and 
-run
+cd to the ```bin``` directory.
 
-    $ ruby route53backup.rb
+To start the daemon
 
-To have the DNS backup running as a daemon, cd to the ```bin``` directory
-and run
+    $ ruby r53backup.rb start
 
-    $ ruby route53backup.rb --daemon 
+To stop the daemon
 
-The ```.route53``` configuration file contains a ```upload-interval``` option
-that allows you to specify an upload interval in seconds when the process is
-running as a daemon.
+    $ ruby r53backup.rb stop
+
+To restart the daemon
+    
+    $ ruby r53backup.rb restart
+
+The ```.route53``` configuration file contains a ```times``` option
+that allows you to specify times when the daemon will backup from
+Route53 and upload to your specified S3 bucket.
 
 Testing
 -------
@@ -51,6 +57,9 @@ There is a test configuration file located at ```spec/.route53_test```.
 If you wish to run tests, modify this configuration file to have your AWS 
 security credentials. Make sure you don't use the same database name and
 upload path combination, or you'll overwrite your real data!
+
+Many tests will pass without the aws information, but at least 
+provide db location and daemon information.
 
 After editing the test configuration file, you can run the tests via
 
