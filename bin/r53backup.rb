@@ -8,9 +8,12 @@ require 'rubygems'
 require 'route53backup'
 require 'daemon'
 require 'timer'
+require 'logger'
 
 class Route53ToS3 < Daemon::Base
 	def self.start
+
+		log = Logger.new(Configuration.daemon['log'])
 
 		# Do an initial upload on start
 		upload
@@ -20,7 +23,7 @@ class Route53ToS3 < Daemon::Base
 			timeList = Configuration.daemon['times']
 			@timer = Timer.new(timeList)
 
-			puts "Next upload in #{@timer.next_upload}"
+			log.debug "Next upload in #{@timer.next_upload}"
 
 			# Keep looping and waiting until the time has come to upload,
 			# and then upload once it's time!
@@ -28,7 +31,7 @@ class Route53ToS3 < Daemon::Base
 
 				if @timer.ready_for_upload? 
 					upload
-					puts "Next upload in #{@timer.next_upload}"
+					log.debug "Next upload in #{@timer.next_upload}"
 				end
 
 				# Sleep for 20 seconds at a time, no need to check as fast as possible!
@@ -38,7 +41,7 @@ class Route53ToS3 < Daemon::Base
 	end
 
 	def self.stop
-		puts "Stopping Route53 to S3 backups"
+		log.debug "Stopping Route53 to S3 backups"
 	end
 	
 	private
@@ -61,3 +64,4 @@ Configuration.new(configFile)
 
 # Run the daemon
 Route53ToS3.daemonize
+#Route53ToS3.start

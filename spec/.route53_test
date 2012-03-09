@@ -43,3 +43,4 @@ location=
 [daemon]
 times=05:00
 pid_dir=/tmp
+log=/var/log/r53.log

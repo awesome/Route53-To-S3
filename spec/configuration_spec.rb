@@ -75,5 +75,9 @@ describe Configuration do
 		it "should include 'pid_dir'" do
 			@daemon['pid_dir'].should_not be_nil
 		end
+
+		it "should include 'log'" do
+			@daemon['log'].should_not be_nil
+		end
 	end
 end
