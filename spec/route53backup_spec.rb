@@ -51,9 +51,7 @@ describe Route53Backup do
 			# Full path of the db file on S3
 			basename = File.basename(@config.db['location'])
 
-			# For some reason, right_aws really doesn't like file paths beginning with
-			# '/'. I should probably fork that...
-			@fullPath = File.join(@config.s3['upload_path'], basename)[1..-1]
+			@fullPath = File.join(@config.s3['upload_path'], basename)
 			@bucket = @config.s3['bucket']
 
 		end
