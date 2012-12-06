@@ -21,6 +21,7 @@ secret_key=
 # Properties related to S3
 # bucket: The name of your S3 bucket you wish to upload to
 # upload_path: The directory on S3 where you want the backup
+                        no leading /
 #############################################################
 [s3]
 bucket=
